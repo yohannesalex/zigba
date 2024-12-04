@@ -7,7 +7,26 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool isUpcoming = true;
-  int currentIndex = 0;
+  int _currentIndex = 0;
+  void _navigateToPage(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+
+    // Navigate to different routes based on index
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/home');
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(context, '/management');
+        break;
+      case 2:
+        Navigator.pushReplacementNamed(context, '/profile');
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -247,60 +266,59 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex, // Set the current index
+        currentIndex: _currentIndex, // Set the current index
         onTap: (index) {
           setState(() {
-            currentIndex = index; // Update the current index
+            _currentIndex = index; // Update the current index
           });
-          if (index == 1) {
-            Navigator.pushNamed(context, '/schedule');
+          if (index == 0) {
+            Navigator.of(context).pushNamed('/management');
+          } else if (index == 1) {
+            Navigator.of(context).pushNamed('/profile');
           } else if (index == 2) {
-            Navigator.pushNamed(context, '/profile');
+            Navigator.of(context).pushNamed('/person');
           }
         },
         items: [
           BottomNavigationBarItem(
-            icon: Column(
-              children: [
-                if (currentIndex == 0)
-                  Container(
-                    height: 3,
-                    width: 20,
-                    color: Colors.blue,
-                  ),
-                Icon(Icons.home),
-              ],
-            ),
-            label: 'Home',
-          ),
+              icon: Column(
+                children: [
+                  if (_currentIndex == 0)
+                    Container(
+                      height: 3,
+                      width: 20,
+                      color: Colors.blue,
+                    ),
+                  Icon(Icons.home),
+                ],
+              ),
+              label: ''),
           BottomNavigationBarItem(
-            icon: Column(
-              children: [
-                if (currentIndex == 1)
-                  Container(
-                    height: 3,
-                    width: 20,
-                    color: Colors.blue,
-                  ),
-                Icon(Icons.calendar_today),
-              ],
-            ),
-            label: 'Schedule',
-          ),
+              icon: Column(
+                children: [
+                  if (_currentIndex == 1)
+                    Container(
+                      height: 3,
+                      width: 20,
+                      color: Colors.blue,
+                    ),
+                  Icon(Icons.calendar_today),
+                ],
+              ),
+              label: ''),
           BottomNavigationBarItem(
-            icon: Column(
-              children: [
-                if (currentIndex == 2)
-                  Container(
-                    height: 3,
-                    width: 20,
-                    color: Colors.blue,
-                  ),
-                Icon(Icons.person),
-              ],
-            ),
-            label: 'Profile',
-          ),
+              icon: Column(
+                children: [
+                  if (_currentIndex == 2)
+                    Container(
+                      height: 3,
+                      width: 20,
+                      color: Colors.blue,
+                    ),
+                  Icon(Icons.person),
+                ],
+              ),
+              label: ''),
         ],
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,

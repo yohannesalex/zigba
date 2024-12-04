@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:zigba/features/auth/presentation/pages/signup.dart';
 import 'package:zigba/features/auth/presentation/pages/welcome.dart';
+import 'package:zigba/features/employee/presentation/add_employee.dart';
+import 'package:zigba/features/employee/presentation/management.dart';
+import 'package:zigba/features/employee/presentation/profile.dart';
 
 import 'features/employee/presentation/company_register.dart';
 import 'features/employee/presentation/home.dart';
@@ -24,10 +27,13 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => HomePage(),
+        '/': (context) => Profile(),
         '/signup': (context) => SignUpPage(),
         '/welcome': (context) => Welocme(),
         '/company_register': (context) => CompanyRegistration(),
+        'management': (context) => Management(),
+        'profile': (context) => Profile(),
+        'home': (context) => HomePage()
       },
     );
   }
