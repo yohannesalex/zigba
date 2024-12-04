@@ -7,6 +7,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool isUpcoming = true;
+  int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -246,19 +247,24 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0, // Set the current index
+        currentIndex: currentIndex, // Set the current index
         onTap: (index) {
           setState(() {
-            // Update the current index
+            currentIndex = index; // Update the current index
           });
+          if (index == 1) {
+            Navigator.pushNamed(context, '/schedule');
+          } else if (index == 2) {
+            Navigator.pushNamed(context, '/profile');
+          }
         },
         items: [
           BottomNavigationBarItem(
             icon: Column(
               children: [
-                if (0 == 0) // Replace 0 with the current index variable
+                if (currentIndex == 0)
                   Container(
-                    height: 2,
+                    height: 3,
                     width: 20,
                     color: Colors.blue,
                   ),
@@ -270,9 +276,9 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Column(
               children: [
-                if (1 == 0) // Replace 0 with the current index variable
+                if (currentIndex == 1)
                   Container(
-                    height: 2,
+                    height: 3,
                     width: 20,
                     color: Colors.blue,
                   ),
@@ -284,9 +290,9 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Column(
               children: [
-                if (2 == 0) // Replace 0 with the current index variable
+                if (currentIndex == 2)
                   Container(
-                    height: 2,
+                    height: 3,
                     width: 20,
                     color: Colors.blue,
                   ),
