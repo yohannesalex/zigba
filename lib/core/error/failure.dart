@@ -18,3 +18,15 @@ class InvalidPasswordFailure extends Failure {
 class InvalidInputFailure extends Failure {
   InvalidInputFailure() : super('Invalid Input');
 }
+
+class SaveFailure extends Failure {
+  SaveFailure() : super('Save Failure');
+}
+
+class FetchFailure extends Failure {
+  FetchFailure() : super('Fetch Failure');
+}
+
+class NotFoundFailure extends Failure {
+  NotFoundFailure() : super('Not Found Failure');
+}

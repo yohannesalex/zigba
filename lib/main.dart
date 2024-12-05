@@ -4,29 +4,40 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:zigba/features/auth/presentation/pages/signup.dart';
 import 'package:zigba/features/auth/presentation/pages/welcome.dart';
-import 'package:zigba/features/employee/presentation/add_employee.dart';
-import 'package:zigba/features/employee/presentation/management.dart';
-import 'package:zigba/features/employee/presentation/profile.dart';
+import 'package:zigba/features/employee/presentation/pages/add_employee.dart';
+import 'package:zigba/features/employee/presentation/pages/management.dart';
+import 'package:zigba/features/employee/presentation/pages/profile.dart';
+import 'package:zigba/features/employee/presentation/pages/company_register.dart';
+import 'package:zigba/features/employee/presentation/pages/home.dart';
+import 'package:zigba/features/auth/presentation/pages/login.dart';
 
-import 'features/auth/Domain/entity/user_entity.dart';
-import 'features/auth/Domain/useCases/login_usecase.dart';
-import 'features/auth/Domain/useCases/signUp_usecase.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
-import 'features/auth/presentation/pages/login.dart';
-import 'features/employee/presentation/company_register.dart';
-import 'features/employee/presentation/home.dart';
+import 'features/employee/presentation/bloc/company_bloc.dart';
 import 'injection_container.dart' as di;
 import 'injection_container.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Hive
   await Hive.initFlutter();
-  await Hive.openBox('userBox');
+  await Hive.openBox('userBox'); // Box for user data
+  await Hive.openBox('companyBox'); // Box for company data
+
+  // Initialize dependency injection
   await di.init();
 
+  // Run the app
   runApp(
-    BlocProvider(
-      create: (context) => AuthBloc(sl(), sl()),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthBloc(sl(), sl()),
+        ),
+        BlocProvider(
+          create: (context) => CompanyBloc(sl(), sl()), // Provide CompanyBloc
+        ),
+      ],
       child: MyApp(),
     ),
   );
@@ -35,7 +46,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -50,7 +60,9 @@ class MyApp extends StatelessWidget {
         '/': (context) => Welocme(),
         '/add_employee': (context) => EmployeeRegistration(),
         '/signup': (context) => SignUpPage(),
-        '/company_register': (context) => CompanyRegistration(),
+        '/company_register': (context) => CompanyRegistration(
+              email: '',
+            ),
         '/management': (context) => Management(),
         '/profile': (context) => Profile(),
         '/home': (context) => HomePage(),
