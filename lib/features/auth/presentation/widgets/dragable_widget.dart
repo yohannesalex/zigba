@@ -68,7 +68,9 @@ class _DragWidgetState extends State<DragWidget> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushReplacementNamed(context, '/login');
+                        },
                         child: Container(
                           padding: EdgeInsets.fromLTRB(36, 15, 36, 15),
                           decoration: BoxDecoration(
@@ -79,7 +81,9 @@ class _DragWidgetState extends State<DragWidget> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushReplacementNamed(context, '/signup');
+                        },
                         child: Container(
                           padding: EdgeInsets.fromLTRB(32, 15, 32, 15),
                           decoration: BoxDecoration(

@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
-class Management extends StatelessWidget {
+class Management extends StatefulWidget {
+  @override
+  State<Management> createState() => _ManagementState();
+}
+
+class _ManagementState extends State<Management> {
+  int _currentIndex = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,8 +33,8 @@ class Management extends StatelessWidget {
                     color: const Color.fromARGB(255, 80, 243, 85),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Row(
-                    children: const [
+                  child: const Row(
+                    children: [
                       Icon(Icons.add_circle_outline,
                           size: 13, color: Color.fromARGB(255, 252, 250, 250)),
                       SizedBox(width: 8),
@@ -83,23 +89,60 @@ class Management extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex, // Set the current index
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index; // Update the current index
+          });
+          if (index == 0) {
+            Navigator.pushReplacementNamed(context, '/home');
+          } else if (index == 2) {
+            Navigator.pushReplacementNamed(context, '/profile');
+          }
+        },
         items: [
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.table_chart),
-            label: 'Management',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
+          BottomNavigationBarItem(
+              icon: Column(
+                children: [
+                  if (_currentIndex == 0)
+                    Container(
+                      height: 3,
+                      width: 20,
+                      color: Colors.blue,
+                    ),
+                  const Icon(Icons.home),
+                ],
+              ),
+              label: ''),
+          BottomNavigationBarItem(
+              icon: Column(
+                children: [
+                  if (_currentIndex == 1)
+                    Container(
+                      height: 3,
+                      width: 20,
+                      color: Colors.blue,
+                    ),
+                  const Icon(Icons.calendar_today),
+                ],
+              ),
+              label: ''),
+          BottomNavigationBarItem(
+              icon: Column(
+                children: [
+                  if (_currentIndex == 2)
+                    Container(
+                      height: 3,
+                      width: 20,
+                      color: Colors.blue,
+                    ),
+                  const Icon(Icons.person),
+                ],
+              ),
+              label: ''),
         ],
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
-        currentIndex: 1,
       ),
     );
   }

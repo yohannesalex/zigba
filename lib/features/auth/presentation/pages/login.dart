@@ -1,28 +1,19 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:zigba/features/auth/Domain/entity/user_entity.dart';
-import 'package:zigba/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:zigba/features/auth/presentation/bloc/auth_event.dart';
 
+import '../../Domain/entity/user_entity.dart';
+import '../bloc/auth_bloc.dart';
+import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 
-void main() => runApp(SignUpApp());
-
-class SignUpApp extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SignUpPage(),
-    );
-  }
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class SignUpPage extends StatefulWidget {
-  @override
-  _SignUpPageState createState() => _SignUpPageState();
-}
-
-class _SignUpPageState extends State<SignUpPage> {
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -42,8 +33,8 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is SignUpSuccessState) {
-            Navigator.pushReplacementNamed(context, '/company_register');
+          if (state is LoginSuccessState) {
+            Navigator.pushReplacementNamed(context, '/home');
           } else if (state is AuthErrorState) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.message)));
@@ -64,7 +55,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 const Text(
-                  'Welcome 👋',
+                  'Welcome back 👋',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.start,
                 ),
@@ -86,7 +77,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ],
                 ),
-                const Text('Hello there, Sign up to continue',
+                const Text('Hello there, Login to Your Account',
                     style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey,
@@ -198,9 +189,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     ElevatedButton(
                       onPressed: isButtonEnabled
                           ? () {
-                              context.read<AuthBloc>().add(SignUpEvent(User(
-                                  email: _emailController.text,
-                                  password: _passwordController.text)));
+                              context.read<AuthBloc>().add(LoginEvent(User(
+                                    email: _emailController.text,
+                                    password: _passwordController.text,
+                                  )));
                             }
                           : null,
                       style: ElevatedButton.styleFrom(
@@ -211,7 +203,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: const Text('Sign up'),
+                      child: const Text('Login'),
                     ),
                     const SizedBox(height: 16),
                     const Row(
@@ -255,13 +247,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Did you already have an account? "),
+                        const Text("Don't you have an account? "),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushReplacementNamed(context, '/login');
+                            Navigator.pushReplacementNamed(context, '/signup');
                           },
                           child: const Text(
-                            "Login",
+                            "Sign up",
                             style: TextStyle(
                               color: Colors.blue,
                               fontWeight: FontWeight.bold,

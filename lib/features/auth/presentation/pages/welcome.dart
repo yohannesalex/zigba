@@ -28,7 +28,7 @@ class _WelocmeState extends State<Welocme> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 83, 152, 243),
+      backgroundColor: const Color.fromARGB(255, 83, 152, 243),
       body: Stack(
         children: [
           Positioned(
@@ -40,7 +40,7 @@ class _WelocmeState extends State<Welocme> {
                 mainAxisAlignment: MainAxisAlignment.values[2],
                 children: [
                   Image.asset('assets/images/Group 39518.png'),
-                  Text('DEMOZ',
+                  const Text('DEMOZ',
                       style: TextStyle(
                           fontSize: 34,
                           color: Colors.white,
@@ -50,7 +50,7 @@ class _WelocmeState extends State<Welocme> {
             ),
           ),
           if (_showLoading)
-            Center(
+            const Center(
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
               ),
@@ -62,7 +62,7 @@ class _WelocmeState extends State<Welocme> {
               right: 0,
               child: Container(
                 height: 300, // Set a fixed height for the DragWidget
-                child: DragWidget(),
+                child: const DragWidget(),
               ),
             ),
         ],

@@ -208,16 +208,18 @@ class _HomePageState extends State<HomePage> {
                           ),
                           const SizedBox(height: 8),
                           Stack(
-                            alignment: Alignment.center,
                             children: [
-                              CircularProgressIndicator(
-                                value: 0.65,
-                                strokeWidth: 8,
-                                backgroundColor: Colors.grey.shade200,
-                                valueColor:
-                                    const AlwaysStoppedAnimation(Colors.blue),
-                              ),
-                              const Text('65%'),
+                              Image.asset('assets/images/Group 258.png'),
+                              Positioned(
+                                  left: -30,
+                                  top: -10,
+                                  child: Image.asset(
+                                      'assets/images/Frame 23.png')),
+                              Positioned(
+                                  top: 25,
+                                  right: -30,
+                                  child: Image.asset(
+                                      'assets/images/Frame 24.png')),
                             ],
                           ),
                           Text(
@@ -271,12 +273,10 @@ class _HomePageState extends State<HomePage> {
           setState(() {
             _currentIndex = index; // Update the current index
           });
-          if (index == 0) {
-            Navigator.of(context).pushNamed('/management');
-          } else if (index == 1) {
-            Navigator.of(context).pushNamed('/profile');
+          if (index == 1) {
+            Navigator.pushReplacementNamed(context, '/management');
           } else if (index == 2) {
-            Navigator.of(context).pushNamed('/person');
+            Navigator.pushReplacementNamed(context, '/profile');
           }
         },
         items: [
