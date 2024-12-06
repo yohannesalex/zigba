@@ -2,14 +2,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../widgets/dragable_widget.dart';
 
-class Welocme extends StatefulWidget {
-  const Welocme({super.key});
+class Welcome extends StatefulWidget {
+  const Welcome({super.key});
 
   @override
-  State<Welocme> createState() => _WelocmeState();
+  State<Welcome> createState() => _WelocmeState();
 }
 
-class _WelocmeState extends State<Welocme> {
+class _WelocmeState extends State<Welcome> {
   bool _showDragWidget = false;
   bool _showLoading = true;
 

@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zigba/features/employee/presentation/pages/profile.dart';
+
+import '../bloc/company_bloc.dart';
+import '../bloc/company_event.dart';
+import 'home.dart';
 
 class Management extends StatefulWidget {
+  final String email;
+  Management({Key? key, required this.email}) : super(key: key);
+
   @override
   State<Management> createState() => _ManagementState();
 }
@@ -72,14 +81,14 @@ class _ManagementState extends State<Management> {
                   columnSpacing: 20,
                   headingRowColor: MaterialStateColor.resolveWith(
                       (states) => Colors.blue.shade50),
-                  columns: [
-                    const DataColumn(label: Text('Employees')),
-                    const DataColumn(label: Text('Net Salary')),
-                    const DataColumn(label: Text('Taxable Earnings')),
-                    const DataColumn(label: Text('Income Tax')),
-                    const DataColumn(label: Text('Pension Tax')),
-                    const DataColumn(label: Text('Gas Pay')),
-                    const DataColumn(label: Text('Actions')),
+                  columns: const [
+                    DataColumn(label: Text('Employees')),
+                    DataColumn(label: Text('Net Salary')),
+                    DataColumn(label: Text('Taxable Earnings')),
+                    DataColumn(label: Text('Income Tax')),
+                    DataColumn(label: Text('Pension Tax')),
+                    DataColumn(label: Text('Gas Pay')),
+                    DataColumn(label: Text('Actions')),
                   ],
                   rows: _buildDataRows(),
                 ),
@@ -95,9 +104,27 @@ class _ManagementState extends State<Management> {
             _currentIndex = index; // Update the current index
           });
           if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/home');
+            context.read<CompanyBloc>().add(GetCompanyEvent(widget.email));
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomePage(
+                  email: widget.email,
+                ),
+              ),
+              (route) => false,
+            );
           } else if (index == 2) {
-            Navigator.pushReplacementNamed(context, '/profile');
+            context.read<CompanyBloc>().add(GetCompanyEvent(widget.email));
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Profile(
+                  email: widget.email,
+                ),
+              ),
+              (route) => false,
+            );
           }
         },
         items: [

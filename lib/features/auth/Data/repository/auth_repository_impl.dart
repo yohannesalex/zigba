@@ -20,13 +20,13 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, Unit>> login(User user) async {
     final result = await localDataSource.getUser(user.email);
-
     return result.fold(
       (failure) => Left(failure), // Pass the failure from the local data source
-      (stored_user) {
-        if (user.password != stored_user.password) {
+      (data) {
+        if (user.password != data.password) {
           return Left(InvalidPasswordFailure());
         }
+
         return const Right(unit);
       },
     );

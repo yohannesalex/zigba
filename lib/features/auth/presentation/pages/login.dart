@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../employee/presentation/bloc/company_bloc.dart';
+import '../../../employee/presentation/bloc/company_event.dart';
+import '../../../employee/presentation/pages/home.dart';
 import '../../Domain/entity/user_entity.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
@@ -32,7 +35,19 @@ class _LoginPageState extends State<LoginPage> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is LoginSuccessState) {
-            Navigator.pushReplacementNamed(context, '/home');
+            print('Login Success');
+            context
+                .read<CompanyBloc>()
+                .add(GetCompanyEvent(_emailController.text));
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomePage(
+                  email: _emailController.text,
+                ),
+              ),
+              (route) => false,
+            );
           } else if (state is AuthErrorState) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.message)));

@@ -36,8 +36,10 @@ class CompanyLocalDataSourceImpl implements CompanyLocalDataSource {
       if (data == null) {
         return Left(NotFoundFailure());
       }
-      return Right((data as CompanyModel).toEntity());
+      return Right((CompanyModel.toModel(data)).toEntity());
     } catch (e) {
+      print('hey');
+      print(e);
       return Left(FetchFailure());
     }
   }

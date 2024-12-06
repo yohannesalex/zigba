@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zigba/features/employee/domain/entity/company_entity.dart';
+import 'package:zigba/features/employee/presentation/pages/home.dart';
 import '../bloc/company_bloc.dart';
 import '../bloc/company_event.dart';
 import '../bloc/company_state.dart';
@@ -40,8 +41,15 @@ class _CompanyRegistrationState extends State<CompanyRegistration> {
       body: BlocListener<CompanyBloc, CompanyState>(
         listener: (context, state) {
           if (state is SuccessState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Company registered successfully')),
+            context.read<CompanyBloc>().add(GetCompanyEvent(widget.email));
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomePage(
+                  email: widget.email,
+                ),
+              ),
+              (route) => false,
             );
           } else if (state is ErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -131,6 +139,9 @@ class _CompanyRegistrationState extends State<CompanyRegistration> {
                   ),
                   child: const Text('Submit for approval'),
                 ),
+                const SizedBox(
+                  height: 30,
+                )
               ],
             ),
           ),

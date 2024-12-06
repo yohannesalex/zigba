@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zigba/features/employee/domain/entity/company_entity.dart';
+import 'package:zigba/features/employee/presentation/pages/management.dart';
+import 'package:zigba/features/employee/presentation/pages/profile.dart';
+
+import '../bloc/company_bloc.dart';
+import '../bloc/company_event.dart';
+import '../bloc/company_state.dart';
 
 class HomePage extends StatefulWidget {
+  final String email;
+  HomePage({Key? key, required this.email}) : super(key: key);
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -8,24 +18,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool isUpcoming = true;
   int _currentIndex = 0;
-  void _navigateToPage(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-
-    // Navigate to different routes based on index
-    switch (index) {
-      case 0:
-        Navigator.pushReplacementNamed(context, '/home');
-        break;
-      case 1:
-        Navigator.pushReplacementNamed(context, '/management');
-        break;
-      case 2:
-        Navigator.pushReplacementNamed(context, '/profile');
-        break;
-    }
-  }
+  int employeeCount = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -48,222 +41,234 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Top Stats Grid
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildStatCard('Number of Employees', '20', Colors.blue),
-                  _buildStatCard('Income Tax paid', '2000', Colors.green),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildStatCard('Pension Tax Paid', '4', Colors.purple),
-                  _buildStatCard('Employees Performance', '95 %', Colors.red),
-                ],
-              ),
-              const SizedBox(height: 20),
-
-              // Tabs (Upcoming/Past)
-              Row(
-                children: [
-                  _changeUpOrPast('Upcoming'),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  _changeUpOrPast('Past'),
-                ],
-              ),
-              const SizedBox(height: 20),
-
-              // Upcoming Tax Section
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 255, 255, 255),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                      color: const Color.fromARGB(255, 255, 255, 255)),
+      body: BlocListener<CompanyBloc, CompanyState>(
+        listener: (context, state) {
+          if (state is LoadedCompanyState) {
+            setState(() {
+              employeeCount = state.company.numberOfEmployees;
+            });
+          } else {
+            print('error');
+          }
+        },
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Top Stats Grid
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildStatCard(
+                        'Number of Employees', '$employeeCount', Colors.blue),
+                    _buildStatCard('Income Tax paid', '2000', Colors.green),
+                  ],
                 ),
-                child: isUpcoming
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Date',
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 12),
-                                  ),
-                                  SizedBox(height: 4),
-                                  Text(
-                                    'Aug 28, 2024 - Sep 5, 2024',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildStatCard('Pension Tax Paid', '4', Colors.purple),
+                    _buildStatCard('Employees Performance', '95 %', Colors.red),
+                  ],
+                ),
+                const SizedBox(height: 20),
+
+                // Tabs (Upcoming/Past)
+                Row(
+                  children: [
+                    _changeUpOrPast('Upcoming'),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    _changeUpOrPast('Past'),
+                  ],
+                ),
+                const SizedBox(height: 20),
+
+                // Upcoming Tax Section
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 255, 255, 255),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                        color: const Color.fromARGB(255, 255, 255, 255)),
+                  ),
+                  child: isUpcoming
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Date',
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 12),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color.fromARGB(
-                                        255, 243, 154, 148)),
-                                child: const Text(
-                                  'pay now',
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Income Tax',
-                                      style: TextStyle(fontSize: 12)),
-                                  Text(
-                                    '4000 etb',
-                                    style: TextStyle(
+                                    SizedBox(height: 4),
+                                    Text(
+                                      'Aug 28, 2024 - Sep 5, 2024',
+                                      style: TextStyle(
                                         fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                              const Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Pension Tax',
-                                      style: TextStyle(fontSize: 12)),
-                                  Text(
-                                    '5000 etb',
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                width: 150,
-                                child: const Text(
-                                  'August Tax on due',
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                  ),
-                                  textAlign: TextAlign.center,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color.fromARGB(
+                                          255, 243, 154, 148)),
+                                  child: const Text(
+                                    'pay now',
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Income Tax',
+                                        style: TextStyle(fontSize: 12)),
+                                    Text(
+                                      '4000 etb',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                                const Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Pension Tax',
+                                        style: TextStyle(fontSize: 12)),
+                                    Text(
+                                      '5000 etb',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  width: 150,
+                                  child: const Text(
+                                    'August Tax on due',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                          ],
+                        )
+                      : const Center(
+                          child: Text(
+                            'No past data avaliable at this time',
+                            style: TextStyle(fontSize: 18, color: Colors.grey),
                           ),
-                          const SizedBox(height: 8),
-                        ],
-                      )
-                    : const Center(
-                        child: Text(
-                          'No past data avaliable at this time',
-                          style: TextStyle(fontSize: 18, color: Colors.grey),
+                        ),
+                ),
+
+                const SizedBox(height: 20),
+
+                // Employee Composition and Tax Summary
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 255, 255, 255),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: Column(
+                          children: [
+                            const Text(
+                              'Employee Composition',
+                              style: TextStyle(
+                                  fontSize: 11, fontWeight: FontWeight.w500),
+                              textAlign: TextAlign.start,
+                            ),
+                            const SizedBox(height: 8),
+                            Stack(
+                              children: [
+                                Image.asset('assets/images/Group 258.png'),
+                                Positioned(
+                                    left: -30,
+                                    top: -10,
+                                    child: Image.asset(
+                                        'assets/images/Frame 23.png')),
+                                Positioned(
+                                    top: 25,
+                                    right: -30,
+                                    child: Image.asset(
+                                        'assets/images/Frame 24.png')),
+                              ],
+                            ),
+                            Text(
+                              '856 employee total',
+                              style: TextStyle(fontSize: 7),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
                         ),
                       ),
-              ),
-
-              const SizedBox(height: 20),
-
-              // Employee Composition and Tax Summary
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 255, 255, 255),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.grey.shade300),
-                      ),
-                      child: Column(
-                        children: [
-                          const Text(
-                            'Employee Composition',
-                            style: TextStyle(
-                                fontSize: 11, fontWeight: FontWeight.w500),
-                            textAlign: TextAlign.start,
-                          ),
-                          const SizedBox(height: 8),
-                          Stack(
-                            children: [
-                              Image.asset('assets/images/Group 258.png'),
-                              Positioned(
-                                  left: -30,
-                                  top: -10,
-                                  child: Image.asset(
-                                      'assets/images/Frame 23.png')),
-                              Positioned(
-                                  top: 25,
-                                  right: -30,
-                                  child: Image.asset(
-                                      'assets/images/Frame 24.png')),
-                            ],
-                          ),
-                          Text(
-                            '856 employee total',
-                            style: TextStyle(fontSize: 7),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
-                      ),
                     ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 255, 255, 255),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.grey.shade300),
-                      ),
-                      child: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Tax Summary',
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 255, 255, 255),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Tax Summary',
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.w600)),
+                            SizedBox(height: 8),
+                            Text(
+                              '9,349.85 etb',
                               style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w600)),
-                          SizedBox(height: 8),
-                          Text(
-                            '9,349.85 etb',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            '49.98% ^',
-                            style: TextStyle(color: Colors.green),
-                          ),
-                        ],
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              '49.98% ^',
+                              style: TextStyle(color: Colors.green),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -274,9 +279,27 @@ class _HomePageState extends State<HomePage> {
             _currentIndex = index; // Update the current index
           });
           if (index == 1) {
-            Navigator.pushReplacementNamed(context, '/management');
+            context.read<CompanyBloc>().add(GetCompanyEvent(widget.email));
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Management(
+                  email: widget.email,
+                ),
+              ),
+              (route) => false,
+            );
           } else if (index == 2) {
-            Navigator.pushReplacementNamed(context, '/profile');
+            context.read<CompanyBloc>().add(GetCompanyEvent(widget.email));
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Profile(
+                  email: widget.email,
+                ),
+              ),
+              (route) => false,
+            );
           }
         },
         items: [

@@ -57,15 +57,19 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => Welocme(),
+        '/': (context) => Welcome(),
         '/add_employee': (context) => EmployeeRegistration(),
         '/signup': (context) => SignUpPage(),
         '/company_register': (context) => CompanyRegistration(
               email: '',
             ),
-        '/management': (context) => Management(),
-        '/profile': (context) => Profile(),
-        '/home': (context) => HomePage(),
+        '/management': (context) => Management(
+              email: '',
+            ),
+        '/profile': (context) => Profile(email: ''),
+        '/home': (context) => HomePage(
+              email: '',
+            ),
         '/login': (context) => LoginPage(),
       },
     );

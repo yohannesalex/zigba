@@ -66,6 +66,18 @@ class CompanyModel extends CompanyEntity {
     };
   }
 
+  static CompanyModel toModel(Map data) {
+    return CompanyModel(
+      name: data['name'],
+      address: data['address'],
+      phoneNumber: data['phoneNumber'],
+      tinNumber: data['tinNumber'],
+      numberOfEmployees: data['numberOfEmployees'],
+      bankName: data['bankName'],
+      bankAccountNumber: data['bankAccountNumber'],
+    );
+  }
+
   CompanyEntity toEntity() {
     return CompanyEntity(
       name: name,
