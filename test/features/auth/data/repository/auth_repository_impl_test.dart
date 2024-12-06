@@ -41,7 +41,7 @@ void main() {
           .thenAnswer((_) async => Left(InvalidInputFailure()));
 
       // Act
-      final result = await authRepository.signUp(testUser);
+      await authRepository.signUp(testUser);
 
       // Assert
       verify(mockLocalDataSource.saveUser(UserModel.toModel(testUser)));
@@ -83,7 +83,7 @@ void main() {
           .thenAnswer((_) async => Right(storedUser));
 
       // Act
-      final result = await authRepository.login(incorrectUser);
+      await authRepository.login(incorrectUser);
 
       // Assert
       verify(mockLocalDataSource.getUser(testUser.email));
@@ -95,7 +95,7 @@ void main() {
           .thenAnswer((_) async => Left(UserNotFoundFailure()));
 
       // Act
-      final result = await authRepository.login(testUser);
+      await authRepository.login(testUser);
 
       // Assert
       verify(mockLocalDataSource.getUser(testUser.email));

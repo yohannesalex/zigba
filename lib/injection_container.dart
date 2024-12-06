@@ -68,9 +68,7 @@ Future<void> init() async {
       () => EmployeeLocalDataSourceImpl(sl()));
 
   // External
-  final Box box = await Hive.openBox('userBox');
   final Box box2 = await Hive.openBox('companyBox');
-  final Box box3 = await Hive.openBox('employeeBox');
   // Open the Hive box
   // sl.registerLazySingleton(() => box2); // Register the Box instance
 

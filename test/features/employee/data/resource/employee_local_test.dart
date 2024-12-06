@@ -1,9 +1,6 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:hive/hive.dart';
-import 'package:zigba/core/error/failure.dart';
 import 'package:zigba/features/employee/Data/resource/employee_local_resource.dart';
 import 'package:zigba/features/employee/data/model/employee_model.dart';
 import 'package:zigba/features/employee/domain/entity/employee_entity.dart';
@@ -51,8 +48,8 @@ void main() {
       when(mockBox.get(any)).thenThrow(Exception());
 
       // Act
-      final result =
-          await dataSource.saveEmployee(testManagerEmail, testEmployee);
+
+      await dataSource.saveEmployee(testManagerEmail, testEmployee);
 
       // Assert
       verify(mockBox.get('${testManagerEmail}employee'));
@@ -67,7 +64,7 @@ void main() {
           .thenReturn(testEmployeeList);
 
       // Act
-      final result = await dataSource.getAllEmployees(testManagerEmail);
+      await dataSource.getAllEmployees(testManagerEmail);
 
       // Assert
       verify(mockBox.get('${testManagerEmail}employee'));
@@ -79,7 +76,7 @@ void main() {
       when(mockBox.get('${testManagerEmail}employee')).thenReturn(null);
 
       // Act
-      final result = await dataSource.getAllEmployees(testManagerEmail);
+      await dataSource.getAllEmployees(testManagerEmail);
 
       // Assert
       verify(mockBox.get('${testManagerEmail}employee'));
@@ -91,7 +88,7 @@ void main() {
       when(mockBox.get(any)).thenThrow(Exception());
 
       // Act
-      final result = await dataSource.getAllEmployees(testManagerEmail);
+      await dataSource.getAllEmployees(testManagerEmail);
 
       // Assert
       verify(mockBox.get('${testManagerEmail}employee'));

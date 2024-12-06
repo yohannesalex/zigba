@@ -1,8 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:hive/hive.dart';
-import 'package:zigba/core/error/failure.dart';
+
 import 'package:zigba/features/auth/Data/model/user_model.dart';
 import 'package:zigba/features/auth/Data/resource/local_resource.dart';
 import '../../../../helper/test_helper.mocks.dart';
