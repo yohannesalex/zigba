@@ -23,8 +23,8 @@ Make sure you have the following installed on your system:
 
 ### Clone the Repository
 ```bash
-git clone <https://github.com/yohannesalex/zigba>
-cd <zigba>
+git clone https://github.com/yohannesalex/zigba
+cd zigba
 ```
 
 ### Install Dependencies
