@@ -26,7 +26,7 @@ class _ManagementState extends State<Management> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         flexibleSpace: Padding(
-          padding: const EdgeInsets.fromLTRB(5, 20, 5, 0),
+          padding: const EdgeInsets.all(10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

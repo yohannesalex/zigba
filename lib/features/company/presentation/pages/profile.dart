@@ -52,7 +52,7 @@ class _ProfileState extends State<Profile> {
           backgroundColor: Colors.white,
           elevation: 0,
           flexibleSpace: Padding(
-            padding: EdgeInsets.all(8),
+            padding: EdgeInsets.all(10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
