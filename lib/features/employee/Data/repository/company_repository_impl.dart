@@ -12,7 +12,9 @@ class CompanyRepositoryImpl implements CompanyRepository {
   @override
   Future<Either<Failure, Unit>> registerCompany(
       String email, CompanyEntity company) async {
-    return await localDataSource.saveCompany(email, company);
+    final cur = await localDataSource.saveCompany(email, company);
+    print(cur);
+    return cur;
   }
 
   @override

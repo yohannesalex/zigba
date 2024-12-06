@@ -43,7 +43,7 @@ class CompanyModel extends CompanyEntity {
         );
 
   factory CompanyModel.fromEntity(CompanyEntity entity) {
-    return CompanyModel(
+    final cur = CompanyModel(
       name: entity.name,
       address: entity.address,
       phoneNumber: entity.phoneNumber,
@@ -52,6 +52,18 @@ class CompanyModel extends CompanyEntity {
       bankName: entity.bankName,
       bankAccountNumber: entity.bankAccountNumber,
     );
+    return cur;
+  }
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'address': address,
+      'phoneNumber': phoneNumber,
+      'tinNumber': tinNumber,
+      'numberOfEmployees': numberOfEmployees,
+      'bankName': bankName,
+      'bankAccountNumber': bankAccountNumber,
+    };
   }
 
   CompanyEntity toEntity() {

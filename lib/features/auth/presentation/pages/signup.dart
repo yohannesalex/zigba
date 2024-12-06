@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zigba/features/auth/Domain/entity/user_entity.dart';
 import 'package:zigba/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:zigba/features/auth/presentation/bloc/auth_event.dart';
+import 'package:zigba/features/employee/presentation/pages/company_register.dart';
 
 import '../bloc/auth_state.dart';
 
@@ -43,7 +44,14 @@ class _SignUpPageState extends State<SignUpPage> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is SignUpSuccessState) {
-            Navigator.pushReplacementNamed(context, '/company_register');
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CompanyRegistration(
+                  email: _emailController.text,
+                ),
+              ),
+            );
           } else if (state is AuthErrorState) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.message)));

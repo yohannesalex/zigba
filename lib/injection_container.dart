@@ -52,8 +52,8 @@ Future<void> init() async {
   final Box box = await Hive.openBox('userBox');
   final Box box2 = await Hive.openBox('companyBox');
   // Open the Hive box
-  sl.registerLazySingleton(() => box2); // Register the Box instance
+  // sl.registerLazySingleton(() => box2); // Register the Box instance
 
-  sl.registerLazySingleton(() => box); // Register the Box instance
+  sl.registerLazySingleton(() => box2); // Register the Box instance
   sl.registerLazySingleton(() => http.Client()); // HTTP Client
 }

@@ -12,18 +12,19 @@ abstract class CompanyLocalDataSource {
 }
 
 class CompanyLocalDataSourceImpl implements CompanyLocalDataSource {
-  final Box box;
+  final Box _box;
 
-  CompanyLocalDataSourceImpl(this.box);
+  CompanyLocalDataSourceImpl(this._box);
 
   @override
   Future<Either<Failure, Unit>> saveCompany(
       String email, CompanyEntity company) async {
     try {
       final companyModel = CompanyModel.fromEntity(company);
-      await box.put(email, companyModel);
+      await _box.put(email, companyModel.toMap());
       return const Right(unit);
     } catch (e) {
+      print(e);
       return Left(SaveFailure());
     }
   }
@@ -31,7 +32,7 @@ class CompanyLocalDataSourceImpl implements CompanyLocalDataSource {
   @override
   Future<Either<Failure, CompanyEntity>> getCompany(String email) async {
     try {
-      final data = box.get(email);
+      final data = _box.get(email);
       if (data == null) {
         return Left(NotFoundFailure());
       }

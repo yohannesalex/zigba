@@ -11,8 +11,10 @@ class RegisterCompanyUsecase implements UseCase<void, RegisterCompanyParams> {
 
   @override
   Future<Either<Failure, void>> call(RegisterCompanyParams addparams) async {
-    return await companyRepository.registerCompany(
+    final cur = await companyRepository.registerCompany(
         addparams.email, addparams.company);
+    print(cur);
+    return cur;
   }
 }
 
