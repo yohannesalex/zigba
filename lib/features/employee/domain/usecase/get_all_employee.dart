@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:zigba/features/company/domain/entity/company_entity.dart';
 import 'package:zigba/features/employee/Domain/repository/employee_repository.dart';
 import 'package:zigba/features/employee/domain/entity/employee_entity.dart';
 import '../../../../core/usecase/usecase.dart';

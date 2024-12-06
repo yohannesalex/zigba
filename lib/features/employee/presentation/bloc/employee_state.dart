@@ -1,4 +1,3 @@
-import 'package:zigba/features/company/domain/entity/company_entity.dart';
 import 'package:zigba/features/employee/domain/entity/employee_entity.dart';
 
 abstract class EmployeeState {
