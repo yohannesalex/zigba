@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:zigba/features/employee/domain/entity/company_entity.dart';
+import 'package:zigba/features/company/domain/entity/company_entity.dart';
 
 @immutable
 abstract class CompanyEvent extends Equatable {

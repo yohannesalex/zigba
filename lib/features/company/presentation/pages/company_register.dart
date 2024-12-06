@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:zigba/features/employee/domain/entity/company_entity.dart';
-import 'package:zigba/features/employee/presentation/pages/home.dart';
+import 'package:zigba/features/company/domain/entity/company_entity.dart';
+import 'package:zigba/features/company/presentation/pages/home.dart';
 import '../bloc/company_bloc.dart';
 import '../bloc/company_event.dart';
 import '../bloc/company_state.dart';

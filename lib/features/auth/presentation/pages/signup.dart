@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zigba/features/auth/Domain/entity/user_entity.dart';
 import 'package:zigba/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:zigba/features/auth/presentation/bloc/auth_event.dart';
-import 'package:zigba/features/employee/presentation/pages/company_register.dart';
+import 'package:zigba/features/company/presentation/pages/company_register.dart';
 
 import '../bloc/auth_state.dart';
 

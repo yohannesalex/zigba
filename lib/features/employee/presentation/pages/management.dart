@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:zigba/features/employee/presentation/pages/profile.dart';
-
-import '../bloc/company_bloc.dart';
-import '../bloc/company_event.dart';
-import 'home.dart';
+import 'package:zigba/features/company/presentation/pages/profile.dart';
+import 'package:zigba/features/employee/domain/entity/employee_entity.dart';
+import 'package:zigba/features/employee/presentation/bloc/employee_bloc.dart';
+import '../../../company/presentation/bloc/company_bloc.dart';
+import '../../../company/presentation/bloc/company_event.dart';
+import '../../../company/presentation/pages/home.dart';
+import '../bloc/employee_state.dart';
+import 'add_employee.dart';
 
 class Management extends StatefulWidget {
   final String email;
@@ -16,6 +19,7 @@ class Management extends StatefulWidget {
 
 class _ManagementState extends State<Management> {
   int _currentIndex = 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +38,17 @@ class _ManagementState extends State<Management> {
                     fontSize: 20),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EmployeeRegistration(
+                        email: widget.email,
+                      ),
+                    ),
+                    (route) => false,
+                  );
+                },
                 child: Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -60,48 +74,64 @@ class _ManagementState extends State<Management> {
         ),
         backgroundColor: Colors.white,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextButton.icon(
-              onPressed: () {},
-              icon: const Icon(Icons.file_upload_outlined, color: Colors.grey),
-              label: const Text(
-                'Upload CSV',
-                style: TextStyle(color: Colors.grey, fontSize: 12),
+      body: BlocBuilder<EmployeeBloc, EmployeeState>(
+        builder: (context, state) {
+          if (state is LoadingState) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is LoadedAllEmployeeState) {
+            final employees = state.employees;
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Icons.file_upload_outlined,
+                        color: Colors.grey),
+                    label: const Text(
+                      'Upload CSV',
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: DataTable(
+                        columnSpacing: 20,
+                        headingRowColor: MaterialStateColor.resolveWith(
+                            (states) => Colors.blue.shade50),
+                        columns: const [
+                          DataColumn(label: Text('Employees')),
+                          DataColumn(label: Text('Net Salary')),
+                          DataColumn(label: Text('Taxable Earnings')),
+                          DataColumn(label: Text('Income Tax')),
+                          DataColumn(label: Text('Pension Tax')),
+                          DataColumn(label: Text('Gas Pay')),
+                          DataColumn(label: Text('Actions')),
+                        ],
+                        rows: _buildDataRows(employees),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: DataTable(
-                  columnSpacing: 20,
-                  headingRowColor: MaterialStateColor.resolveWith(
-                      (states) => Colors.blue.shade50),
-                  columns: const [
-                    DataColumn(label: Text('Employees')),
-                    DataColumn(label: Text('Net Salary')),
-                    DataColumn(label: Text('Taxable Earnings')),
-                    DataColumn(label: Text('Income Tax')),
-                    DataColumn(label: Text('Pension Tax')),
-                    DataColumn(label: Text('Gas Pay')),
-                    DataColumn(label: Text('Actions')),
-                  ],
-                  rows: _buildDataRows(),
-                ),
-              ),
-            ),
-          ],
-        ),
+            );
+          } else {
+            return const Center(
+              child: Text('No employees found'),
+            );
+          }
+        },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex, // Set the current index
+        currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
-            _currentIndex = index; // Update the current index
+            _currentIndex = index;
           });
           if (index == 0) {
             context.read<CompanyBloc>().add(GetCompanyEvent(widget.email));
@@ -174,51 +204,16 @@ class _ManagementState extends State<Management> {
     );
   }
 
-  List<DataRow> _buildDataRows() {
-    final data = [
-      {
-        "name": "Abraham Welde",
-        "net": "15,000",
-        "taxable": "2000",
-        "income": "5000",
-        "pension": "500",
-        "gas": "300",
-      },
-      {
-        "name": "Bisrat Alemu",
-        "net": "25,000",
-        "taxable": "3000",
-        "income": "7000",
-        "pension": "700",
-        "gas": "400",
-      },
-      {
-        "name": "Bisrate Girum",
-        "net": "15,000",
-        "taxable": "2000",
-        "income": "5000",
-        "pension": "500",
-        "gas": "300",
-      },
-      {
-        "name": "Alemu Molla",
-        "net": "15,000",
-        "taxable": "2000",
-        "income": "5000",
-        "pension": "500",
-        "gas": "300",
-      },
-    ];
-
-    return data.map((item) {
+  List<DataRow> _buildDataRows(List<EmployeeEntity> employees) {
+    return employees.map((employee) {
       return DataRow(
         cells: [
-          _buildColoredCell(item["name"]!, 0),
-          _buildColoredCell(item["net"]!, 1),
-          _buildColoredCell(item["taxable"]!, 2),
-          _buildColoredCell(item["income"]!, 3),
-          _buildColoredCell(item["pension"]!, 4),
-          _buildColoredCell(item["gas"]!, 5),
+          _buildColoredCell(employee.name, 0),
+          _buildColoredCell(employee.grossSalary.toString(), 1),
+          _buildColoredCell(employee.taxableEarnings.toString(), 2),
+          _buildColoredCell(((employee.grossSalary) / 5).toString(), 3),
+          _buildColoredCell(((employee.grossSalary) / 9).toString(), 4),
+          _buildColoredCell(((employee.grossSalary) / 15).toString(), 5),
           DataCell(
             ElevatedButton(
               onPressed: () {},
@@ -245,10 +240,10 @@ class _ManagementState extends State<Management> {
       Container(
         decoration: BoxDecoration(
           color: backgroundColor,
-          border: Border.all(color: Colors.grey.shade300), // Visible border
+          border: Border.all(color: Colors.grey.shade300),
         ),
         alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(13),
         child: Text(value),
       ),
     );

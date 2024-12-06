@@ -6,13 +6,14 @@ import 'package:zigba/features/auth/presentation/pages/signup.dart';
 import 'package:zigba/features/auth/presentation/pages/welcome.dart';
 import 'package:zigba/features/employee/presentation/pages/add_employee.dart';
 import 'package:zigba/features/employee/presentation/pages/management.dart';
-import 'package:zigba/features/employee/presentation/pages/profile.dart';
-import 'package:zigba/features/employee/presentation/pages/company_register.dart';
-import 'package:zigba/features/employee/presentation/pages/home.dart';
+import 'package:zigba/features/company/presentation/pages/profile.dart';
+import 'package:zigba/features/company/presentation/pages/company_register.dart';
+import 'package:zigba/features/company/presentation/pages/home.dart';
 import 'package:zigba/features/auth/presentation/pages/login.dart';
 
 import 'features/auth/presentation/bloc/auth_bloc.dart';
-import 'features/employee/presentation/bloc/company_bloc.dart';
+import 'features/company/presentation/bloc/company_bloc.dart';
+import 'features/employee/presentation/bloc/employee_bloc.dart';
 import 'injection_container.dart' as di;
 import 'injection_container.dart';
 
@@ -22,7 +23,9 @@ void main() async {
   // Initialize Hive
   await Hive.initFlutter();
   await Hive.openBox('userBox'); // Box for user data
-  await Hive.openBox('companyBox'); // Box for company data
+  await Hive.openBox('companyBox');
+  await Hive.openBox('employeeBox');
+  // Box for company data
 
   // Initialize dependency injection
   await di.init();
@@ -36,6 +39,9 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => CompanyBloc(sl(), sl()), // Provide CompanyBloc
+        ),
+        BlocProvider(
+          create: (context) => EmployeeBloc(sl(), sl()), // Provide CompanyBloc
         ),
       ],
       child: MyApp(),
@@ -58,7 +64,9 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => Welcome(),
-        '/add_employee': (context) => EmployeeRegistration(),
+        '/add_employee': (context) => EmployeeRegistration(
+              email: '',
+            ),
         '/signup': (context) => SignUpPage(),
         '/company_register': (context) => CompanyRegistration(
               email: '',

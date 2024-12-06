@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../employee/presentation/bloc/company_bloc.dart';
-import '../../../employee/presentation/bloc/company_event.dart';
-import '../../../employee/presentation/pages/home.dart';
+import '../../../company/presentation/bloc/company_bloc.dart';
+import '../../../company/presentation/bloc/company_event.dart';
+import '../../../company/presentation/pages/home.dart';
 import '../../Domain/entity/user_entity.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
