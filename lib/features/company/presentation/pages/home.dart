@@ -351,7 +351,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildStatCard(String title, String value, Color color) {
     return Container(
       height: 130,
-      width: 190,
+      width: 150,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
